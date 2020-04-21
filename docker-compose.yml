@@ -1,0 +1,44 @@
+version: '3.7'
+
+services:
+  shortener-php:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        - GEOIP_LICENSE=${GEOIP_LICENSE}
+    container_name: shortener-php
+    depends_on:
+      - shortener-mysql
+    volumes:
+      - shortener-project:/project
+  shortener-nginx:
+    image: nginx
+    container_name: shortener-nginx
+    ports:
+      - 4250:80
+    depends_on:
+      - shortener-php
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/conf.d/default.conf
+      - shortener-project:/project
+  shortener-mysql:
+    image: mysql:5.7
+    container_name: shortener-mysql
+    ports:
+      - 4251:3306
+    environment:
+      MYSQL_DATABASE: shortener
+      MYSQL_ROOT_PASSWORD: p@ssword1!
+  shortener-encore:
+    image: node:10-alpine
+    container_name: shortener-encore
+    depends_on:
+      - shortener-php
+    volumes:
+      - shortener-project:/project
+    working_dir: /project
+    entrypoint: "sh /project/docker/entrypoint-static.sh"
+volumes:
+  shortener-project:
+    name: "shortener-project"

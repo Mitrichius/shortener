@@ -23,5 +23,15 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+    App\Service\UrlService:
+        arguments:
+            $encoder: '@App\Service\Encoder'
+
+    App\Service\StatService:
+        arguments:
+            $geoService: '@App\Service\GeoService'
+            $uaService: '@App\Service\UserAgentService'
+
+    App\Service\GeoService:
+        arguments:
+            - { geoIpDbPath: '%env(resolve:GEOIP_DB)%' }

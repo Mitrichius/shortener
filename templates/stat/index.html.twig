@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% set short_url_full = app.request.schemeAndHttpHost ~ '/' ~ short_url %}
+    <h2 class="text-center mt-2">Stats for url: <a target="_blank" href="{{ short_url_full }}">{{ short_url_full }}</a></h2>
+    {# total items count #}
+    {% if stats is empty %}
+        <div class="alert alert-warning">
+            Sorry, there is no stat for this url yet
+        </div>
+    {% else %}
+        <div class="count mt-2">
+            Total items in history: {{ stats.getTotalItemCount }}
+        </div>
+        <table class="table table-striped mt-2">
+            <thead class="thead-dark">
+                <tr>
+                    <th>DateTime</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Browser</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in stats %}
+                    <tr {% if loop.index is odd %}class="color"{% endif %}>
+                        <td>{{ stat.createdAt|date('Y-m-d H:i:s') }}</td>
+                        <td>{{ stat.country }}</td>
+                        <td>{{ stat.city }}</td>
+                        <td>{{ stat.browser }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+            {{ knp_pagination_render(stats) }}
+        </div>
+    {% endif %}
+{% endblock %}

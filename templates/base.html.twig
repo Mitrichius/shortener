@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>{% block title %}Url Shortener{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    {% endblock %}
+    {% block javascripts %}
+        <script src="{{ asset('build/app.js') }}"></script>
+    {% endblock %}
+</head>
+<body>
+    <div class="container align-items-center justify-content-center">
+        <h1 class="text-center mt-5 mb-5">Url shortener</h1>
+        {% block body %}
+        {% endblock %}
+    </div>
+</body>
+</html>

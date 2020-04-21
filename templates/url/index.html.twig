@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ form(form) }}
+    {% if short_url is defined %}
+        {% set short_url_full = app.request.schemeAndHttpHost ~ '/' ~ short_url %}
+        {% set stat_url = app.request.schemeAndHttpHost ~ '/stat/' ~ short_url %}
+        Here is your short link: <a target="_blank" href="{{ short_url_full }}">{{ short_url_full }}</a><br/>
+        Also you can check stat here:  <a target="_blank" href="{{ stat_url }}">{{ stat_url }}</a>
+    {% endif %}
+
+{% endblock %}
